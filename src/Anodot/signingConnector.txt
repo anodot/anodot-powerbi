@@ -1,0 +1,24 @@
+1. Follow instructions here https://docs.microsoft.com/en-us/power-query/handlingconnectorsigning
+2. You may need to create your own test-certificate for getting a fingerprint (described in the document above)
+3. Provide the customer with the fingerprint. https://docs.microsoft.com/en-us/power-bi/connect-data/desktop-trusted-third-party-connectors
+
+Example:
+
+.\MakePQX.exe pack -mz .\Anodot.mez
+.\MakePQX.exe sign "C:\Users\andreii\MakePQX_Release\Anodot.pqx" --certificate .\mypfx.pfx --password password
+.\MakePQX.exe verify "C:\Users\andreii\MakePQX_Release\Anodot.pqx"
+{
+  "SignatureStatus": "Success",
+  "CertificateStatus": [
+    {
+      "Issuer": "CN=www.anodot.com",
+      "Thumbprint": "1234******",
+      "Subject": "CN=www.anodot.com",
+      "NotBefore": "2022-04-20T00:11:09+03:00",
+      "NotAfter": "2023-04-20T00:31:09+03:00",
+      "Valid": false,
+      "Parent": null,
+      "Status": "UntrustedRoot"
+    }
+  ]
+}
