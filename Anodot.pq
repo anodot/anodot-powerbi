@@ -48,17 +48,17 @@ AnodotNavTable = (url as text, domain as text) as table =>
 
 GetDefaultRequestHeaders = (url as text) as record =>
     let
-    refreshToken = Extension.CurrentCredential()[Key],
-    authJson     = Json.Document(
-                     Web.Contents(
-                       url & "access-token/?responseformat=JSON",
-                       [
-                         Headers = [ #"Content-Type"  = "application/json" ],
-                         Content = Json.FromValue([ refreshToken = refreshToken ])
-                       ]
-                     )
-                   ),
-    accessToken  = authJson[token],
+        refreshToken = Extension.CurrentCredential()[Key],
+        authJson = Json.Document(
+            Web.Contents(
+                url & "access-token/?responseformat=JSON",
+                [
+                    Headers = [#"Content-Type" = "application/json"],
+                    Content = Json.FromValue([refreshToken = refreshToken])
+                ]
+            )
+        ),
+        accessToken = authJson[token],
         headers = [
             #"Authorization" = "Bearer " & accessToken,
             #"Content-Type" = "application/json"
@@ -128,9 +128,14 @@ GetMetricsTable = (url as text) as table =>
 GetAlertsTable = (url as text, optional query) as table =>
     let
         source = Web.Contents(
-            url & "alerts/triggered", [Headers = GetDefaultRequestHeaders(url), Query = query, ManualCredentials = true]
+            url & "alerts/triggered",
+            [
+                Headers = GetDefaultRequestHeaders(url),
+                Query = query,
+                ManualCredentials = true
+            ]
         ),
-        alerts = Json.Document(source)[alertGroups],
+        alerts = Json.Document(source)[alerts],
         alertsTable = Table.FromRecords(alerts)
     in
         alertsTable;
